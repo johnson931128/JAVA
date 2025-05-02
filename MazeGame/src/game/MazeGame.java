@@ -1,12 +1,12 @@
 package game;
 
-import javax.swing.*;
+import gui.MazePanel;
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 import model.Cell;
-import model.Player;
 import model.MazeGenerator;
-import gui.MazePanel;
+import model.Player;
 
 public class MazeGame {
     private MazePanel mazePanel;
@@ -123,15 +123,20 @@ public class MazeGame {
     }
 
     private void movePlayer(int keyCode) {
-        int newX = player.getX();
-        int newY = player.getY();
+        int currentX = player.getX(); // Use different names to avoid conflict in lambda
+        int currentY = player.getY();
 
-        switch (keyCode) {
-            case KeyEvent.VK_UP:    newY--; break;
-            case KeyEvent.VK_DOWN:  newY++; break;
-            case KeyEvent.VK_LEFT:  newX--; break;
-            case KeyEvent.VK_RIGHT: newX++; break;
-        }
+        // Use enhanced switch (rule switch)
+        int newX = switch (keyCode) {
+            case KeyEvent.VK_LEFT -> currentX - 1;
+            case KeyEvent.VK_RIGHT -> currentX + 1;
+            default -> currentX; // Default case for X coordinate
+        };
+        int newY = switch (keyCode) {
+            case KeyEvent.VK_UP -> currentY - 1;
+            case KeyEvent.VK_DOWN -> currentY + 1;
+            default -> currentY; // Default case for Y coordinate
+        };
 
         if (isValidMove(newX, newY)) {
             player.setPosition(newX, newY);

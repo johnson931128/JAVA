@@ -1,11 +1,12 @@
 package game;
 
-import javax.swing.*;
-import java.awt.event.*;
-import model.Cell;
-import model.Player;
-import model.MazeGenerator;
 import gui.GameUI;
+import gui.MazePanel;
+import java.awt.event.*;
+import javax.swing.*;
+import model.Cell;
+import model.MazeGenerator;
+import model.Player;
 
 public class GameController {
     private GameState state;
@@ -53,6 +54,7 @@ public class GameController {
         ui.getMazePanel().addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
+                System.out.println("Key Pressed: " + e.getKeyCode());
                 handleKeyPress(e.getKeyCode());
             }
         });
@@ -124,5 +126,9 @@ public class GameController {
 
     public JPanel getGamePanel() {
         return ui.getMainPanel();
+    }
+
+    public MazePanel getUiMazePanel() {
+        return ui.getMazePanel();
     }
 } 

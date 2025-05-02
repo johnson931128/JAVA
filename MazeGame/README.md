@@ -56,6 +56,10 @@ java -jar MazeGame.jar
    - Added manifest file for JAR creation
    - Created comprehensive README
 
+### 2025-03-28
+1. Added a simple login panel (`gui.LoginPanel`), including title and "Continue", "New Game", "Sign Up" buttons, layout inspired by design
+2. Modified `App.java` to display this login panel when starting
+
 ## Project Structure
 - `src/`: Source code directory
   - `model/`: Game data models
@@ -64,3 +68,13 @@ java -jar MazeGame.jar
 - `bin/`: Compiled class files
 - `build.bat/build.sh`: Build scripts
 - `MazeGame.jar`: Executable game file
+
+## use app
+```
+javac src/App.java src/game/*.java src/gui/*.java src/model/*.java
+java -cp src App
+```
+
+## 錯誤訊息
+image.png
+先不要修正，修正會動不了。

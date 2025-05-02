@@ -1,16 +1,16 @@
 package gui;
 
-import javax.swing.*;
+import game.GameState;
 import java.awt.*;
+import javax.swing.*;
 import model.Cell;
 import model.Player;
-import game.GameState;
 
 public class GameUI {
     private JPanel mainPanel;
     private MazePanel mazePanel;
     private JLabel timerLabel;
-    private GameState gameState;
+    private final GameState gameState;
 
     public GameUI(Cell[][] maze, Player player, GameState gameState) {
         this.gameState = gameState;

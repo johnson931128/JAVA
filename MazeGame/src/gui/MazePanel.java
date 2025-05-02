@@ -1,12 +1,12 @@
 package gui;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 import model.Cell;
 import model.Player;
 
 public class MazePanel extends JPanel {
-    private Cell[][] maze;
+    private final Cell[][] maze;
     private Player player;
     private static final int CELL_SIZE = 12; // Small cells for complex maze
     private static final int PLAYER_SIZE = 8; // Size for player and finish point
