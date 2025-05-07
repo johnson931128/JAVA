@@ -55,7 +55,7 @@ public class LoginPanel extends JPanel {
         add(Box.createVerticalGlue());
 
         // 設置面板的首選大小
-        setPreferredSize(new Dimension(852, 492)); // 與遊戲面板大小一致
+        setPreferredSize(new Dimension(1062, 694)); // 與遊戲面板大小一致
     }
 
     // 輔助方法來設置按鈕樣式
