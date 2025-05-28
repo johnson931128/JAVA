@@ -121,7 +121,6 @@ public class GameController {
         // Update UI
         ui.updateMazePanel(maze, player);
         setupKeyListener();
-        
         // Restart timer
         timer.start();
     }

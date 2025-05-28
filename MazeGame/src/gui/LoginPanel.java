@@ -67,4 +67,56 @@ public class LoginPanel extends JPanel {
     public JButton getContinueButton() { return continueButton; }
     // public JButton getNewGameButton() { ... }
     // public JButton getSignUpButton() { ... }
+
+    public void showLoginOptions() {
+        this.removeAll();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(new Color(245, 245, 220));
+        add(Box.createVerticalGlue());
+        JLabel titleLabel = new JLabel("MAZEGAME");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 36));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(titleLabel);
+        add(Box.createRigidArea(new Dimension(0, 50)));
+        add(continueButton);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JButton newGameButton = new JButton("NEW GAME");
+        styleButton(newGameButton);
+        newGameButton.addActionListener(e -> {
+            if (this.onNewGameAction != null) {
+                this.onNewGameAction.run();
+            }
+        });
+        add(newGameButton);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        add(Box.createVerticalGlue());
+        setPreferredSize(new Dimension(1062, 694));
+        revalidate();
+        repaint();
+    }
+
+    public void showModeSelect() {
+        this.removeAll();
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setBackground(new Color(245, 245, 220));
+        add(Box.createVerticalGlue());
+        JLabel titleLabel = new JLabel("MAZEGAME");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 36));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        add(titleLabel);
+        add(Box.createRigidArea(new Dimension(0, 50)));
+        JButton singleButton = new JButton("SINGLE");
+        styleButton(singleButton);
+        singleButton.addActionListener(e -> showLoginOptions());
+        add(singleButton);
+        add(Box.createRigidArea(new Dimension(0, 20)));
+        JButton multiButton = new JButton("MULTIPLE");
+        styleButton(multiButton);
+        // multiButton.addActionListener(...); // 之後可擴充
+        add(multiButton);
+        add(Box.createVerticalGlue());
+        setPreferredSize(new Dimension(1062, 694));
+        revalidate();
+        repaint();
+    }
 } 

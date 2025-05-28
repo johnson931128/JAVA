@@ -33,6 +33,7 @@ public class App {
 
             // 實例化 LoginPanel 並將其存入持有器
             loginPanelHolder[0] = new LoginPanel(switchAction);
+            loginPanelHolder[0].showModeSelect();
             
             // 連結 CONTINUE 按鈕事件
             loginPanelHolder[0].getContinueButton().addActionListener(e -> {

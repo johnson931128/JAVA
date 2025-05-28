@@ -102,3 +102,7 @@ java -cp src App
     1. GameController.java 新增 getCurrentLevel(), getPlayerX(), getPlayerY() 方法，提供目前關卡與玩家座標。
     2. App.java 取得這些資訊並呼叫 Continue.saveGame(...)，點擊 SAVE 按鈕即可存檔。
     3. 存檔成功會跳出提示視窗。
+
+## 2024-更新紀錄
+
+// （本區塊內容已移除，因視窗自動調整功能已取消）
