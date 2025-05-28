@@ -339,3 +339,40 @@ game.getGameUI().getBackToMenuButton().addActionListener(e -> {
 - **App.java**：負責 MENU 按鈕的事件監聽、畫面切換
 - **GameController.java**：提供目前遊戲狀態的查詢方法
 - **Continue.java**：負責實際將資料寫入 save.txt 
+
+---
+
+## 如何將專案封裝成 .jar
+
+### 1. 編譯所有原始碼
+在專案根目錄下執行：
+```bash
+javac -d bin src/App.java src/game/*.java src/gui/*.java src/model/*.java
+```
+- `-d bin` 代表編譯後的 .class 檔案會放到 bin 目錄。
+- 確保 bin 目錄已存在，否則請先建立：`mkdir bin`
+
+### 2. 建立 manifest.txt
+內容如下（假設主程式為 App）：
+```
+Main-Class: App
+```
+
+### 3. 打包成 jar 檔
+在專案根目錄下執行：
+```bash
+jar cfm MazeGame.jar manifest.txt -C bin .
+```
+- `MazeGame.jar` 為輸出的 jar 檔名。
+- `manifest.txt` 指定主程式。
+- `-C bin .` 代表將 bin 目錄下所有 class 檔案打包進 jar。
+
+### 4. 執行 jar 檔
+```bash
+java -jar MazeGame.jar
+```
+
+### 5. 注意事項
+- 若有圖片、音效等資源，需一併打包或放在 jar 可存取的目錄。
+- 若遇到「找不到主類別」錯誤，請檢查 manifest.txt 是否正確。
+- 若有第三方函式庫，需用 `-cp` 或 `Class-Path` 指定。 
