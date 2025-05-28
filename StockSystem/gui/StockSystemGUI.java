@@ -16,11 +16,9 @@ public class StockSystemGUI extends JPanel {
         this.stockProvider = stockProvider;
         setLayout(new BorderLayout());
 
-
         JPanel inputPanel = new JPanel();
         stockCodeField = new JTextField(10);
         JButton searchButton = new JButton("Search");
-
 
         searchButton.addActionListener(new ActionListener() {
             @Override
@@ -37,15 +35,11 @@ public class StockSystemGUI extends JPanel {
         inputPanel.add(stockCodeField);
         inputPanel.add(searchButton);
 
-
         resultArea = new JTextArea(10, 30);
         resultArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(resultArea);
 
-
         add(inputPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
     }
-}
-
-
+} 

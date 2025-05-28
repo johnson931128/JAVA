@@ -1,3 +1,4 @@
+import game.Continue;
 import game.GameController;
 import gui.LoginPanel;
 import java.awt.Container;
@@ -9,8 +10,8 @@ public class App {
             JFrame frame = new JFrame("Maze Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
-            // 創建遊戲控制器和面板 (先創建好，以便傳遞給 LoginPanel)
-            GameController game = new GameController(41, 71);
+            // 創建遊戲控制器和面板 (傳遞 frame 進去)
+            GameController game = new GameController(21, 21, frame);
             JPanel gamePanel = game.getGamePanel();
 
             // 使用數組來持有 loginPanel 的引用，以確保 final 或 effectively final
@@ -32,6 +33,46 @@ public class App {
 
             // 實例化 LoginPanel 並將其存入持有器
             loginPanelHolder[0] = new LoginPanel(switchAction);
+            
+            // 連結 CONTINUE 按鈕事件
+            loginPanelHolder[0].getContinueButton().addActionListener(e -> {
+                Continue.SaveData save = Continue.loadGame();
+                if (save != null) {
+                    // 依照存檔初始化遊戲狀態
+                    for (int i = 1; i < save.level; i++) game.startNextLevel();
+                    game.setPlayerPosition(save.playerX, save.playerY);
+                    // 切換到遊戲畫面
+                    Container contentPane = frame.getContentPane();
+                    contentPane.remove(loginPanelHolder[0]);
+                    contentPane.add(gamePanel);
+                    contentPane.revalidate();
+                    contentPane.repaint();
+                    SwingUtilities.invokeLater(() -> {
+                        game.getUiMazePanel().requestFocusInWindow();
+                    });
+                } else {
+                    JOptionPane.showMessageDialog(frame, "沒有存檔可繼續，請先開始新遊戲！", "提示", JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+
+            // 連結 SAVE 按鈕事件
+            game.getGameUI().getSaveButton().addActionListener(e -> {
+                Continue.saveGame(
+                    game.getCurrentLevel(),
+                    game.getPlayerX(),
+                    game.getPlayerY()
+                );
+                JOptionPane.showMessageDialog(frame, "存檔成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+            });
+            
+            // 連結 返回Menu 按鈕事件
+            game.getGameUI().getBackToMenuButton().addActionListener(e -> {
+                Container contentPane = frame.getContentPane();
+                contentPane.remove(gamePanel); // 移除遊戲主畫面
+                contentPane.add(loginPanelHolder[0]); // 加回登入/主選單
+                contentPane.revalidate();
+                contentPane.repaint();
+            });
             
             // 將持有器中的面板添加到 frame
             frame.add(loginPanelHolder[0]); // 初始顯示登錄面板

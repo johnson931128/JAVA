@@ -1,0 +1,3 @@
+level=1
+playerX=5
+playerY=15

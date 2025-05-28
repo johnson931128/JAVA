@@ -18,5 +18,4 @@ public class LocalStockProvider implements StockProvider {
     public Optional<Stock> getStock(String code) {
         return Optional.ofNullable(stockData.get(code));
     }
-}
-
+} 

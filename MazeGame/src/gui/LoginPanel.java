@@ -6,6 +6,7 @@ import javax.swing.*;
 public class LoginPanel extends JPanel {
 
     private Runnable onNewGameAction;
+    private final JButton continueButton;
 
     public LoginPanel(Runnable onNewGameAction) {
         this.onNewGameAction = onNewGameAction;
@@ -26,7 +27,7 @@ public class LoginPanel extends JPanel {
         add(Box.createRigidArea(new Dimension(0, 50))); // 垂直間隔
 
         // "CONTINUE" 按鈕
-        JButton continueButton = new JButton("CONTINUE");
+        continueButton = new JButton("CONTINUE");
         styleButton(continueButton);
         add(continueButton);
 
@@ -46,11 +47,6 @@ public class LoginPanel extends JPanel {
         // 添加按鈕之間的間隔
         add(Box.createRigidArea(new Dimension(0, 20))); // 垂直間隔
 
-        // "SIGN UP" 按鈕
-        JButton signUpButton = new JButton("SIGN UP");
-        styleButton(signUpButton);
-        add(signUpButton);
-
         // 添加底部空白間隔
         add(Box.createVerticalGlue());
 
@@ -68,7 +64,7 @@ public class LoginPanel extends JPanel {
     }
 
     // 如果需要，可以添加獲取按鈕的方法，以便在外部添加監聽器
-    // public JButton getContinueButton() { ... }
+    public JButton getContinueButton() { return continueButton; }
     // public JButton getNewGameButton() { ... }
     // public JButton getSignUpButton() { ... }
 } 

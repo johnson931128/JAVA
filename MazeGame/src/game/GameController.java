@@ -2,6 +2,7 @@ package game;
 
 import gui.GameUI;
 import gui.MazePanel;
+import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.*;
 import model.Cell;
@@ -15,8 +16,10 @@ public class GameController {
     private Cell[][] maze;
     private Timer timer;
     private MazeGenerator mazeGenerator;
+    private JFrame frame;
 
-    public GameController(int initialRows, int initialCols) {
+    public GameController(int initialRows, int initialCols, JFrame frame) {
+        this.frame = frame;
         state = new GameState(initialRows, initialCols);
         initializeGame();
     }
@@ -66,10 +69,10 @@ public class GameController {
         int newY = player.getY();
 
         switch (keyCode) {
-            case KeyEvent.VK_UP:    newY--; break;
-            case KeyEvent.VK_DOWN:  newY++; break;
-            case KeyEvent.VK_LEFT:  newX--; break;
-            case KeyEvent.VK_RIGHT: newX++; break;
+            case KeyEvent.VK_UP -> newY--;
+            case KeyEvent.VK_DOWN -> newY++;
+            case KeyEvent.VK_LEFT -> newX--;
+            case KeyEvent.VK_RIGHT -> newX++;
         }
 
         if (isValidMove(newX, newY)) {
@@ -103,7 +106,7 @@ public class GameController {
         }
     }
 
-    private void startNextLevel() {
+    public void startNextLevel() {
         state.incrementLevel();
         
         // Generate new maze
@@ -122,6 +125,23 @@ public class GameController {
         
         // Restart timer
         timer.start();
+
+        // --- 新增：自動調整視窗大小，並加最大限制 ---
+        if (frame != null) {
+            Dimension mazeSize = ui.getMazePanel().getPreferredSize();
+            int timerHeight = 60; // timerLabel 與下方 padding
+            int maxWidth = 1200;
+            int maxHeight = 900;
+            int newWidth = Math.min(mazeSize.width, maxWidth);
+            int newHeight = Math.min(mazeSize.height + timerHeight, maxHeight);
+            frame.setSize(newWidth, newHeight);
+            frame.setLocationRelativeTo(null); // 視窗置中
+        }
+    }
+
+    public void setPlayerPosition(int x, int y) {
+        player.setPosition(x, y);
+        ui.getMazePanel().repaint();
     }
 
     public JPanel getGamePanel() {
@@ -130,5 +150,21 @@ public class GameController {
 
     public MazePanel getUiMazePanel() {
         return ui.getMazePanel();
+    }
+
+    public GameUI getGameUI() {
+        return ui;
+    }
+
+    public int getCurrentLevel() {
+        return state.getCurrentLevel();
+    }
+
+    public int getPlayerX() {
+        return player.getX();
+    }
+
+    public int getPlayerY() {
+        return player.getY();
     }
 } 

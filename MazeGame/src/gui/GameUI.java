@@ -11,6 +11,11 @@ public class GameUI {
     private MazePanel mazePanel;
     private JLabel timerLabel;
     private final GameState gameState;
+    private final JButton saveButton = new JButton("SAVE");
+    private final JButton backToMenuButton = new JButton("Menu");
+
+    public JButton getSaveButton() { return saveButton; }
+    public JButton getBackToMenuButton() { return backToMenuButton; }
 
     public GameUI(Cell[][] maze, Player player, GameState gameState) {
         this.gameState = gameState;
@@ -22,6 +27,18 @@ public class GameUI {
         timerLabel = new JLabel();
         updateTimerLabel();
         timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Initialize save button
+        saveButton.setFont(new Font("Arial", Font.BOLD, 16));
+        saveButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        saveButton.setFocusPainted(false);
+        saveButton.setBackground(new Color(245, 245, 220));
+        
+        // Initialize back to menu button
+        backToMenuButton.setFont(new Font("Arial", Font.BOLD, 16));
+        backToMenuButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        backToMenuButton.setFocusPainted(false);
+        backToMenuButton.setBackground(new Color(245, 245, 220));
         
         // Initialize maze panel
         mazePanel = new MazePanel(maze, player, timerLabel);
@@ -30,6 +47,8 @@ public class GameUI {
         mainPanel = new JPanel(new BorderLayout());
         JPanel timerPanel = new JPanel();
         timerPanel.add(timerLabel);
+        timerPanel.add(saveButton);
+        timerPanel.add(backToMenuButton);
         mainPanel.add(mazePanel, BorderLayout.CENTER);
         mainPanel.add(timerPanel, BorderLayout.SOUTH);
     }
