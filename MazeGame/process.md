@@ -107,19 +107,48 @@ public Dimension getPreferredSize() {
 ### 開發日記與設計理念
 - **UI 整合**：將迷宮面板、計時器、存檔按鈕、返回Menu按鈕整合，讓遊戲主流程更易管理。
 - **UI 更新**：每次切換新關卡時，正確移除舊 MazePanel 並加上新 MazePanel，避免殘影或事件遺失。
-- **存檔按鈕**：提供 saveButton，玩家可隨時手動存檔。
-- **返回Menu按鈕**：提供 backToMenuButton，玩家可隨時回到主選單。
+- **存檔按鈕（SAVE）**：提供 saveButton，玩家可隨時手動存檔。
+    - 按下 SAVE 時，會將目前關卡、玩家座標寫入 save.txt，並跳出提示「存檔成功！」。
+    - 若存檔過程發生錯誤，會在終端顯示錯誤訊息。
+    - 存檔格式為純文字，方便日後維護與除錯。
+    - 存檔按鈕設計為明顯、易點擊，放在畫面下方 timerPanel。
+    - 適合用於玩家想隨時保存進度、或在挑戰高難度迷宮時備份進度。
+- **返回Menu按鈕（MENU）**：提供 backToMenuButton，玩家可隨時回到主選單。
+    - 按下 MENU 時，會將遊戲主畫面移除，切換回登入/主選單畫面（LoginPanel）。
+    - 不會重置遊戲進度，玩家可隨時回來繼續。
+    - 若玩家在遊戲中誤觸 MENU，可直接再點 CONTINUE 或 NEW GAME 重新進入。
+    - 按鈕設計為明顯、易點擊，與 SAVE 並列於 timerPanel。
+    - 提升用戶體驗，讓玩家有「隨時退出」的安全感。
 
 #### 互動細節
 - updateMazePanel 會先 remove 舊 MazePanel，再 add 新的，並 revalidate/repaint。
 - showLevelCompleteDialog 會彈窗顯示過關資訊，並詢問是否繼續下一關。
-- 返回Menu按鈕會切換回登入/主選單畫面。
+- SAVE 按鈕會將進度寫入檔案，MENU 按鈕會切換回登入/主選單畫面。
 
 #### 程式碼片段
 ```java
 timerPanel.add(timerLabel);
 timerPanel.add(saveButton);
 timerPanel.add(backToMenuButton);
+
+// SAVE 按鈕事件（App.java）
+game.getGameUI().getSaveButton().addActionListener(e -> {
+    Continue.saveGame(
+        game.getCurrentLevel(),
+        game.getPlayerX(),
+        game.getPlayerY()
+    );
+    JOptionPane.showMessageDialog(frame, "存檔成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+});
+
+// MENU 按鈕事件（App.java）
+game.getGameUI().getBackToMenuButton().addActionListener(e -> {
+    Container contentPane = frame.getContentPane();
+    contentPane.remove(gamePanel);
+    contentPane.add(loginPanelHolder[0]);
+    contentPane.revalidate();
+    contentPane.repaint();
+});
 ```
 
 ---
@@ -215,4 +244,95 @@ public void setPosition(int x, int y) {
 private void generateMaze(int x, int y) {
     // 遞迴打通路徑
 }
-``` 
+```
+
+### SAVE（存檔）功能點擊後的完整流程
+
+#### 1. 觸發點（UI層）
+- **檔案**：src/gui/GameUI.java
+- **元件**：saveButton（JButton）
+- **說明**：玩家在遊戲主畫面下方點擊「SAVE」按鈕。
+
+#### 2. 事件監聽（主程式層）
+- **檔案**：src/App.java
+- **程式碼片段**：
+```java
+game.getGameUI().getSaveButton().addActionListener(e -> {
+    Continue.saveGame(
+        game.getCurrentLevel(),
+        game.getPlayerX(),
+        game.getPlayerY()
+    );
+    JOptionPane.showMessageDialog(frame, "存檔成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
+});
+```
+- **說明**：
+  - 這段程式碼在 App.java 的 main 方法中，於遊戲初始化後設定。
+  - 當 SAVE 按鈕被點擊時，會呼叫 Continue.saveGame(...)，並彈出提示視窗。
+
+#### 3. 取得遊戲狀態（邏輯層）
+- **檔案**：src/game/GameController.java
+- **方法**：
+  - getCurrentLevel()：取得目前關卡
+  - getPlayerX()：取得玩家 X 座標
+  - getPlayerY()：取得玩家 Y 座標
+- **說明**：
+  - 這些方法由 App.java 呼叫，用來取得目前要存檔的遊戲狀態。
+
+#### 4. 執行存檔（存檔邏輯層）
+- **檔案**：src/game/Continue.java
+- **方法**：public static void saveGame(int level, int playerX, int playerY)
+- **說明**：
+  - 將傳入的關卡與玩家座標寫入 save.txt 檔案。
+  - 若寫入過程有錯誤，會在終端顯示錯誤訊息。
+
+#### 5. 存檔完成（UI回饋）
+- **檔案**：src/App.java
+- **說明**：
+  - 存檔成功後，會跳出 JOptionPane 視窗提示「存檔成功！」，讓玩家明確知道操作已完成。
+
+---
+
+### MENU（返回主選單）功能點擊後的完整流程
+
+#### 1. 觸發點（UI層）
+- **檔案**：src/gui/GameUI.java
+- **元件**：backToMenuButton（JButton）
+- **說明**：玩家在遊戲主畫面下方點擊「返回Menu」按鈕。
+
+#### 2. 事件監聽（主程式層）
+- **檔案**：src/App.java
+- **程式碼片段**：
+```java
+game.getGameUI().getBackToMenuButton().addActionListener(e -> {
+    Container contentPane = frame.getContentPane();
+    contentPane.remove(gamePanel);
+    contentPane.add(loginPanelHolder[0]);
+    contentPane.revalidate();
+    contentPane.repaint();
+});
+```
+- **說明**：
+  - 這段程式碼在 App.java 的 main 方法中，於遊戲初始化後設定。
+  - 當 MENU 按鈕被點擊時，會將遊戲主畫面移除，切換回登入/主選單畫面（LoginPanel）。
+
+#### 3. 畫面切換（UI層）
+- **檔案**：src/App.java
+- **說明**：
+  - 透過 Swing 的 remove/add/revalidate/repaint 方法，將主畫面切換回登入畫面。
+  - 不會重置遊戲進度，玩家可隨時回來繼續。
+
+---
+
+### 流程圖（文字版）
+1. 玩家點擊 MENU（GameUI.java 的 backToMenuButton）
+2. App.java 的事件監聽器被觸發
+3. App.java 執行畫面切換，將遊戲主畫面移除、登入畫面加回
+
+---
+
+### 各檔案職責總結
+- **GameUI.java**：負責 MENU 按鈕的 UI 呈現與提供 getter
+- **App.java**：負責 MENU 按鈕的事件監聽、畫面切換
+- **GameController.java**：提供目前遊戲狀態的查詢方法
+- **Continue.java**：負責實際將資料寫入 save.txt 
