@@ -79,7 +79,7 @@ public class App {
             frame.add(loginPanelHolder[0]); // 初始顯示登錄面板
             
             frame.pack(); // 根據內容調整窗口大小 (現在是 LoginPanel 的大小)
-            frame.setSize(865,560);
+            frame.setSize(1062,694);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
