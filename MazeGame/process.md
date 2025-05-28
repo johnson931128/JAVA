@@ -151,6 +151,9 @@ game.getGameUI().getBackToMenuButton().addActionListener(e -> {
 });
 ```
 
+### 2025-xx-xx
+- 修正 GameUI.java 的 updateMazePanel 方法，僅替換中央 MazePanel，不再移除 SOUTH 的 timerPanel，確保 SAVE、MENU、timerLabel 不會因為切換關卡而消失。
+
 ---
 
 ## game/GameController.java

@@ -62,7 +62,7 @@ public class GameUI {
 
     public void updateMazePanel(Cell[][] maze, Player player) {
         MazePanel newMazePanel = new MazePanel(maze, player, timerLabel);
-        mainPanel.remove(mainPanel.getComponent(0));
+        mainPanel.remove(mazePanel);
         mainPanel.add(newMazePanel, BorderLayout.CENTER);
         mazePanel = newMazePanel;
         mainPanel.revalidate();
