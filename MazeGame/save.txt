@@ -1,3 +1,4 @@
-level=13
-playerX=3
-playerY=3
+level=2
+playerX=5
+playerY=11
+mazeSeed=1436387122593500

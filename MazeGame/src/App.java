@@ -5,13 +5,17 @@ import java.awt.Container;
 import javax.swing.*;
 
 public class App {
+    private static final int MAZE_WIDTH = 21;
+    private static final int MAZE_HEIGHT = 21;
+    private static final int FRAME_WIDTH = 1062;
+    private static final int FRAME_HEIGHT = 694;
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Maze Game");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             // 創建遊戲控制器和面板 (傳遞 frame 進去)
-            GameController game = new GameController(21, 21, frame);
+            GameController game = new GameController(MAZE_WIDTH, MAZE_HEIGHT, frame);
             JPanel gamePanel = game.getGamePanel();
 
             // 使用數組來持有 loginPanel 的引用，以確保 final 或 effectively final
@@ -19,12 +23,7 @@ public class App {
 
             // 創建切換邏輯的 Runnable
             Runnable switchAction = () -> {
-                Container contentPane = frame.getContentPane();
-                // 從持有器中獲取 loginPanel
-                contentPane.remove(loginPanelHolder[0]); // 移除登錄面板
-                contentPane.add(gamePanel);     // 添加遊戲面板
-                contentPane.revalidate();       // 重新驗證佈局
-                contentPane.repaint();          // 重繪界面
+                switchPanel(frame, loginPanelHolder[0], gamePanel);
                 // 將焦點請求放入 invokeLater
                 SwingUtilities.invokeLater(() -> {
                     game.getUiMazePanel().requestFocusInWindow(); // 請求內部 MazePanel 的焦點
@@ -40,14 +39,9 @@ public class App {
                 Continue.SaveData save = Continue.loadGame();
                 if (save != null) {
                     // 依照存檔初始化遊戲狀態
-                    for (int i = 1; i < save.level; i++) game.startNextLevel();
-                    game.setPlayerPosition(save.playerX, save.playerY);
+                    game.loadGameData(save.level, save.playerX, save.playerY, save.mazeSeed);
                     // 切換到遊戲畫面
-                    Container contentPane = frame.getContentPane();
-                    contentPane.remove(loginPanelHolder[0]);
-                    contentPane.add(gamePanel);
-                    contentPane.revalidate();
-                    contentPane.repaint();
+                    switchPanel(frame, loginPanelHolder[0], gamePanel);
                     SwingUtilities.invokeLater(() -> {
                         game.getUiMazePanel().requestFocusInWindow();
                     });
@@ -61,27 +55,32 @@ public class App {
                 Continue.saveGame(
                     game.getCurrentLevel(),
                     game.getPlayerX(),
-                    game.getPlayerY()
+                    game.getPlayerY(),
+                    game.getCurrentMazeSeed()
                 );
                 JOptionPane.showMessageDialog(frame, "存檔成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
             });
             
             // 連結 返回Menu 按鈕事件
             game.getGameUI().getBackToMenuButton().addActionListener(e -> {
-                Container contentPane = frame.getContentPane();
-                contentPane.remove(gamePanel); // 移除遊戲主畫面
-                contentPane.add(loginPanelHolder[0]); // 加回登入/主選單
-                contentPane.revalidate();
-                contentPane.repaint();
+                switchPanel(frame, gamePanel, loginPanelHolder[0]);
             });
             
             // 將持有器中的面板添加到 frame
             frame.add(loginPanelHolder[0]); // 初始顯示登錄面板
             
             frame.pack(); // 根據內容調整窗口大小 (現在是 LoginPanel 的大小)
-            frame.setSize(1062,694);
+            frame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
         });
+    }
+
+    private static void switchPanel(JFrame frame, JPanel panelToRemove, JPanel panelToAdd) {
+        Container contentPane = frame.getContentPane();
+        contentPane.remove(panelToRemove);
+        contentPane.add(panelToAdd);
+        contentPane.revalidate();
+        contentPane.repaint();
     }
 }

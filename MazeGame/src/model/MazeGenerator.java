@@ -7,11 +7,17 @@ public class MazeGenerator {
     private int cols;
     private Cell[][] maze;
     private Random random;
+    private long seed;
 
     public MazeGenerator(int rows, int cols) {
+        this(rows, cols, System.nanoTime()); // Use current time as default seed
+    }
+
+    public MazeGenerator(int rows, int cols, long seed) {
         this.rows = rows;
         this.cols = cols;
-        this.random = new Random();
+        this.seed = seed;
+        this.random = new Random(seed);
         this.maze = new Cell[rows][cols];
     }
 
@@ -63,5 +69,9 @@ public class MazeGenerator {
             array[index] = array[i];
             array[i] = temp;
         }
+    }
+
+    public long getSeed() {
+        return seed;
     }
 } 

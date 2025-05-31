@@ -16,6 +16,7 @@ public class GameController {
     private Timer timer;
     private MazeGenerator mazeGenerator;
     private JFrame frame;
+    private long currentMazeSeed;
 
     public GameController(int initialRows, int initialCols, JFrame frame) {
         this.frame = frame;
@@ -26,6 +27,7 @@ public class GameController {
     private void initializeGame() {
         // Initialize maze generator
         mazeGenerator = new MazeGenerator(state.getRows(), state.getCols());
+        this.currentMazeSeed = mazeGenerator.getSeed();
         
         // Generate initial maze
         maze = mazeGenerator.generate();
@@ -110,6 +112,7 @@ public class GameController {
         
         // Generate new maze
         mazeGenerator = new MazeGenerator(state.getRows(), state.getCols());
+        this.currentMazeSeed = mazeGenerator.getSeed();
         maze = mazeGenerator.generate();
         
         // Reset player position
@@ -152,5 +155,27 @@ public class GameController {
 
     public int getPlayerY() {
         return player.getY();
+    }
+
+    public long getCurrentMazeSeed() {
+        return currentMazeSeed;
+    }
+
+    public void loadGameData(int level, int playerX, int playerY, long mazeSeed) {
+        state.setCurrentLevel(level);
+        state.setRows(state.getInitialRows() + (level - 1) * 2);
+        state.setCols(state.getInitialCols() + (level - 1) * 2);
+
+        mazeGenerator = new MazeGenerator(state.getRows(), state.getCols(), mazeSeed);
+        this.currentMazeSeed = mazeSeed;
+        maze = mazeGenerator.generate();
+        
+        player.setPosition(playerX, playerY);
+        
+        state.resetTimer();
+        
+        ui.updateMazePanel(maze, player);
+        setupKeyListener();
+        timer.start();
     }
 } 
