@@ -4,7 +4,7 @@
 
 ## 1. 基本語法與關鍵字（語意與範例）
 - `public` / `private` / `protected`：存取修飾子，決定類別/方法/變數的可見範圍。
-  - 例：`public class App { ... }`、`private int x;`
+  - 例：`public class Main.App { ... }`、`private int x;`
 - `class`：定義一個類別。
   - 例：`public class Player { ... }`
 - `interface`：定義介面，規範類別必須實作的方法。
@@ -127,7 +127,7 @@
 - MVC 分層（Model-View-Controller）：將資料、畫面、控制邏輯分開，提升維護性。
   - Model：資料與邏輯（Cell, Player, MazeGenerator, GameState）
   - View：畫面（MazePanel, GameUI, LoginPanel）
-  - Controller：流程控制（GameController, App）
+  - Controller：流程控制（GameController, Main.App）
 - 單一職責原則：每個類別只做一件事，降低耦合。
 
 ---
