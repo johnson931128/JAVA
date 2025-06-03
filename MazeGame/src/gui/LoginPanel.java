@@ -14,24 +14,29 @@ public class LoginPanel extends JPanel {
 
     public LoginPanel(Runnable onNewGameAction) {
         this.onNewGameAction = onNewGameAction;
+        // 設置佈局管理器為 BoxLayout，垂直排列
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBackground(new Color(245, 245, 220));
+        setBackground(new Color(245, 245, 220)); // 米色背景
 
         add(Box.createVerticalGlue());
 
         JLabel titleLabel = new JLabel("MAZEGAME");
-        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 36));
-        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 36)); // 設置字體和大小
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT); // 居中對齊
         add(titleLabel);
 
-        add(Box.createRigidArea(new Dimension(0, 50)));
+        // 添加標題和按鈕之間的間隔
+        add(Box.createRigidArea(new Dimension(0, 50))); // 垂直間隔
 
+        // "CONTINUE" 按鈕
         continueButton = new JButton("CONTINUE");
         styleButton(continueButton);
         add(continueButton);
 
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        // 添加按鈕之間的間隔
+        add(Box.createRigidArea(new Dimension(0, 20))); // 垂直間隔
 
+        // "NEW GAME" 按鈕
         newGameButton = new JButton("NEW GAME");
         styleButton(newGameButton);
         newGameButton.addActionListener(e -> {
@@ -41,26 +46,27 @@ public class LoginPanel extends JPanel {
         });
         add(newGameButton);
 
-        add(Box.createRigidArea(new Dimension(0, 20)));
+        // 添加按鈕之間的間隔
+        add(Box.createRigidArea(new Dimension(0, 20))); // 垂直間隔
 
+        // 添加底部空白間隔
         add(Box.createVerticalGlue());
 
-        setPreferredSize(new Dimension(1062, 694));
+        setPreferredSize(new Dimension(1062, 694)); // 與遊戲面板大小一致
     }
 
+    // 輔助方法來設置按鈕樣式
     private void styleButton(JButton button) {
         button.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setFocusPainted(false);
+        button.setAlignmentX(Component.CENTER_ALIGNMENT); // 居中對齊
+        button.setFocusPainted(false); // 去除焦點邊框
+        // 設置按鈕的最大尺寸以控制寬度
         button.setMaximumSize(new Dimension(200, 40));
     }
 
+    // 如果需要，可以添加獲取按鈕的方法，以便在外部添加監聽器
     public JButton getContinueButton() {
         return continueButton;
-    }
-
-    public JButton getNewGameButton() {
-        return newGameButton;
     }
 
     public void showLoginOptions() {
@@ -112,8 +118,6 @@ public class LoginPanel extends JPanel {
                 try {
                     int mazeWidth = Integer.parseInt(widthField.getText());
                     int mazeHeight = Integer.parseInt(heightField.getText());
-                    App.setMazeWidth(mazeWidth);
-                    App.setMazeHeight(mazeHeight);
 
                     // Write updated values to config.txt
                     try (FileWriter writer = new FileWriter("src/environment/config.txt")) {

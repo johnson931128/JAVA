@@ -48,13 +48,6 @@ public class App {
         return MAZE_HEIGHT;
     }
 
-    public static void setMazeWidth(int width) {
-        MAZE_WIDTH = width;
-    }
-
-    public static void setMazeHeight(int height) {
-        MAZE_HEIGHT = height;
-    }
 
     public static void main(String[] args) {
         loadConfig(); // Call loadConfig() at the start of the main method
