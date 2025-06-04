@@ -3,7 +3,7 @@
 ---
 
 ## 目錄
-- [App.java](#appjava)
+- [Main.App.java](#appjava)
 - [gui/LoginPanel.java](#guiloginpaneljava)
 - [gui/MazePanel.java](#guimazepaneljava)
 - [gui/GameUI.java](#guigameuijava)
@@ -16,7 +16,7 @@
 
 ---
 
-## App.java
+## Main.App.java
 ### 開發日記與設計理念
 - **啟動點**：本檔案是整個遊戲的進入點，負責建立 JFrame 主視窗、初始化遊戲控制器與登入畫面。
 - **UI 切換**：設計時考慮到 Java Swing 的元件切換特性，必須 remove/add 並 revalidate/repaint，否則畫面會殘留或無法互動。
@@ -131,7 +131,7 @@ timerPanel.add(timerLabel);
 timerPanel.add(saveButton);
 timerPanel.add(backToMenuButton);
 
-// SAVE 按鈕事件（App.java）
+// SAVE 按鈕事件（Main.App.java）
 game.getGameUI().getSaveButton().addActionListener(e -> {
     Continue.saveGame(
         game.getCurrentLevel(),
@@ -141,7 +141,7 @@ game.getGameUI().getSaveButton().addActionListener(e -> {
     JOptionPane.showMessageDialog(frame, "存檔成功！", "提示", JOptionPane.INFORMATION_MESSAGE);
 });
 
-// MENU 按鈕事件（App.java）
+// MENU 按鈕事件（Main.App.java）
 game.getGameUI().getBackToMenuButton().addActionListener(e -> {
     Container contentPane = frame.getContentPane();
     contentPane.remove(gamePanel);
@@ -257,7 +257,7 @@ private void generateMaze(int x, int y) {
 - **說明**：玩家在遊戲主畫面下方點擊「SAVE」按鈕。
 
 #### 2. 事件監聽（主程式層）
-- **檔案**：src/App.java
+- **檔案**：src/Main.App.java
 - **程式碼片段**：
 ```java
 game.getGameUI().getSaveButton().addActionListener(e -> {
@@ -270,7 +270,7 @@ game.getGameUI().getSaveButton().addActionListener(e -> {
 });
 ```
 - **說明**：
-  - 這段程式碼在 App.java 的 main 方法中，於遊戲初始化後設定。
+  - 這段程式碼在 Main.App.java 的 main 方法中，於遊戲初始化後設定。
   - 當 SAVE 按鈕被點擊時，會呼叫 Continue.saveGame(...)，並彈出提示視窗。
 
 #### 3. 取得遊戲狀態（邏輯層）
@@ -280,7 +280,7 @@ game.getGameUI().getSaveButton().addActionListener(e -> {
   - getPlayerX()：取得玩家 X 座標
   - getPlayerY()：取得玩家 Y 座標
 - **說明**：
-  - 這些方法由 App.java 呼叫，用來取得目前要存檔的遊戲狀態。
+  - 這些方法由 Main.App.java 呼叫，用來取得目前要存檔的遊戲狀態。
 
 #### 4. 執行存檔（存檔邏輯層）
 - **檔案**：src/game/Continue.java
@@ -290,7 +290,7 @@ game.getGameUI().getSaveButton().addActionListener(e -> {
   - 若寫入過程有錯誤，會在終端顯示錯誤訊息。
 
 #### 5. 存檔完成（UI回饋）
-- **檔案**：src/App.java
+- **檔案**：src/Main.App.java
 - **說明**：
   - 存檔成功後，會跳出 JOptionPane 視窗提示「存檔成功！」，讓玩家明確知道操作已完成。
 
@@ -304,7 +304,7 @@ game.getGameUI().getSaveButton().addActionListener(e -> {
 - **說明**：玩家在遊戲主畫面下方點擊「返回Menu」按鈕。
 
 #### 2. 事件監聽（主程式層）
-- **檔案**：src/App.java
+- **檔案**：src/Main.App.java
 - **程式碼片段**：
 ```java
 game.getGameUI().getBackToMenuButton().addActionListener(e -> {
@@ -316,11 +316,11 @@ game.getGameUI().getBackToMenuButton().addActionListener(e -> {
 });
 ```
 - **說明**：
-  - 這段程式碼在 App.java 的 main 方法中，於遊戲初始化後設定。
+  - 這段程式碼在 Main.App.java 的 main 方法中，於遊戲初始化後設定。
   - 當 MENU 按鈕被點擊時，會將遊戲主畫面移除，切換回登入/主選單畫面（LoginPanel）。
 
 #### 3. 畫面切換（UI層）
-- **檔案**：src/App.java
+- **檔案**：src/Main.App.java
 - **說明**：
   - 透過 Swing 的 remove/add/revalidate/repaint 方法，將主畫面切換回登入畫面。
   - 不會重置遊戲進度，玩家可隨時回來繼續。
@@ -329,14 +329,14 @@ game.getGameUI().getBackToMenuButton().addActionListener(e -> {
 
 ### 流程圖（文字版）
 1. 玩家點擊 MENU（GameUI.java 的 backToMenuButton）
-2. App.java 的事件監聽器被觸發
-3. App.java 執行畫面切換，將遊戲主畫面移除、登入畫面加回
+2. Main.App.java 的事件監聽器被觸發
+3. Main.App.java 執行畫面切換，將遊戲主畫面移除、登入畫面加回
 
 ---
 
 ### 各檔案職責總結
 - **GameUI.java**：負責 MENU 按鈕的 UI 呈現與提供 getter
-- **App.java**：負責 MENU 按鈕的事件監聽、畫面切換
+- **Main.App.java**：負責 MENU 按鈕的事件監聽、畫面切換
 - **GameController.java**：提供目前遊戲狀態的查詢方法
 - **Continue.java**：負責實際將資料寫入 save.txt 
 
@@ -347,15 +347,15 @@ game.getGameUI().getBackToMenuButton().addActionListener(e -> {
 ### 1. 編譯所有原始碼
 在專案根目錄下執行：
 ```bash
-javac -d bin src/App.java src/game/*.java src/gui/*.java src/model/*.java
+javac -d bin src/Main.App.java src/game/*.java src/gui/*.java src/model/*.java
 ```
 - `-d bin` 代表編譯後的 .class 檔案會放到 bin 目錄。
 - 確保 bin 目錄已存在，否則請先建立：`mkdir bin`
 
 ### 2. 建立 manifest.txt
-內容如下（假設主程式為 App）：
+內容如下（假設主程式為 Main.App）：
 ```
-Main-Class: App
+Main-Class: Main.App
 ```
 
 ### 3. 打包成 jar 檔

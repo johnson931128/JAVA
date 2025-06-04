@@ -1,2 +1,2 @@
-Main-Class: App
+Main-Class: Main.App
 Class-Path: . 
