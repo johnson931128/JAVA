@@ -1,0 +1,15 @@
+java -cp src App
+
+Remove-Item -Recurse -Force .\bin
+mkdir bin
+javac -encoding UTF-8 -cp ".;lib\gson-2.10.1.jar" -d bin (Get-ChildItem src -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+
+java -cp ".;lib\gson-2.10.1.jar;bin" net.GameServer
+java -cp ".;lib\gson-2.10.1.jar;bin" Main.AppClient localhost
+java -cp ".;lib\gson-2.10.1.jar;bin" Main.AppClient 192.168.208.185
+
+## Single player
+Remove-Item -Recurse -Force .\bin
+mkdir bin
+javac -encoding UTF-8 -cp ".;lib\\gson-2.10.1.jar;lib\\jlayer-1.0.1.jar" -d bin (Get-ChildItem src -Recurse -Filter *.java | ForEach-Object { $_.FullName })
+java -cp ".;lib\\gson-2.10.1.jar;lib\\jlayer-1.0.1.jar;bin" Main.App 

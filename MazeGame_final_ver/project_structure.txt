@@ -1,0 +1,64 @@
+# 專案簡介：
+# 本專案是一款支援多人連線的迷宮遊戲，結合自動地圖生成、即時網路對戰、音效與圖形化介面。玩家可透過伺服器協作或競賽，體驗隨機迷宮挑戰與豐富互動。專案結構模組化，適合學習 Java 網路、GUI、遊戲邏輯與多媒體整合開發。
+
+c:\java_practice\MazeGame_final_ver
+├── build.bat
+├── build.sh
+├── gson-2.13.1.jar
+├── jlayer-1.0.1.jar
+├── manifest.txt
+├── Maze game cmd.txt
+├── MazeGame.iml
+├── MazeGame.jar
+├── process.md
+├── README.md
+├── save.txt
+├── synatic.md
+├── bin/
+│   ├── game/
+│   ├── gui/
+│   ├── image/
+│   ├── Main/
+│   ├── model/
+│   ├── net/
+│   └── util/
+├── lib/
+│   ├── gson-2.10.1.jar   # Google 的 JSON 處理函式庫，負責 JSON 解析與序列化
+│   └── jlayer-1.0.1.jar  # MP3 播放函式庫，支援音效播放
+└── src/
+    ├── audio/            # 音效與音樂資源
+    │   └── music.mp3     # 遊戲背景音樂
+    ├── environment/      # 遊戲環境設定
+    │   └── config.txt    # 迷宮或遊戲相關設定檔
+    ├── game/             # 遊戲主邏輯
+    │   ├── Continue.java           # 存檔/續玩功能
+    │   ├── GameController.java     # 遊戲流程控制
+    │   ├── GameState.java          # 遊戲狀態定義
+    │   └── MazeGame.java           # 遊戲主程式
+    ├── gui/                        # 圖形化介面
+    │   ├── GameUI.java             # 遊戲主視窗
+    │   ├── LoginPanel.java         # 登入介面
+    │   ├── MazePanel.java          # 迷宮繪製與顯示
+    │   └── SettingPanel.java       # 設定介面
+    ├── image/                      # 圖片資源
+    │   └── background.png          # 遊戲背景圖
+    ├── Main/                       # 程式進入點
+    │   ├── App.java                # 伺服器主程式
+    │   └── AppClient.java          # 客戶端主程式
+    ├── model/                      # 資料結構與模型
+    │   ├── Cell.java               # 迷宮格子定義
+    │   ├── MazeGenerator.java      # 迷宮產生器
+    │   └── Player.java             # 玩家資料
+    ├── net/                        # 網路通訊
+    │   ├── GameServer.java         # 遊戲伺服器
+    │   └── RemoteGameController.java # 遠端控制與同步
+    └── util/                       # 工具類別
+        └── AudioPlayer.java        # 音效播放工具
+
+# bin/ 目錄下為編譯後的 class 檔案
+# src/ 目錄下為原始碼與資源檔案
+# lib/ 目錄下為第三方 jar 套件
+# 其他為專案設定、腳本與說明文件
+# 各資料夾下 .class 為編譯後檔案，.java 為原始碼
+# 主要程式進入點：src/Main/App.java（伺服器）、src/Main/AppClient.java（客戶端）
+# 迷宮邏輯、狀態、玩家、網路、GUI、工具皆有獨立模組，方便維護與擴充
