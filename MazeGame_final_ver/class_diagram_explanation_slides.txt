@@ -1,0 +1,123 @@
+Slide 1: 圖形生成，遊戲資料儲存、繪製 (Graphics Generation, Game Data Storage, Rendering)
+
+- GameUI:
+  - 職責: 負責構建和管理遊戲的主要使用者介面。
+  - 功能: 初始化遊戲畫面上的各種元件，
+          例如返回主選單按鈕 (getBackToMenuButton)、
+          音效按鈕 (getAudioButton)、
+          分數標籤 (getScoreLabel)、
+          遊戲結束/過關對話框 (showLevelCompleteDialog)、
+          主要的迷宮面板 (getMainPanel)、存檔按鈕 (getSaveButton)。
+  - 互動: 它會根據遊戲狀態更新UI元素，
+          例如更新分數 (updateScoreLabel)、
+          從網路更新遊戲狀態 (updateFromNetwork)、
+          更新迷宮畫面 (updateMazePanel) 
+          和更新計時器 (updateTimerLabel)。
+
+- LoginPanel:
+  - 職責: 管理遊戲開始時的登入或模式選擇畫面。
+  - 功能: 提供繪製登入介面 (paintComponent)、
+          獲取繼續遊戲按鈕 (getContinueButton)、
+          顯示多人遊戲選項 (showMultiplayerOptions)、
+          設定按鈕樣式 (styleButton)、
+          顯示登入選項 (showLoginOptions) 
+          以及顯示模式選擇 (showModeSelect) 的功能。
+  - 互動: 處理玩家的模式選擇，並觸發相應的遊戲流程。
+
+- MazeGame:
+  - 職責: 包含核心的迷宮遊戲邏輯。
+  - 功能: 重置遊戲 (resetGame)、
+          設定鍵盤監聽 (setupKeyListener) 以處理玩家移動、
+          設定計時器 (setupTimer)、
+          獲取迷宮面板 (getMazePanel) 以進行繪製、
+          初始化遊戲 (initializeGame)、
+          處理玩家移動 (movePlayer)、
+          檢查移動是否有效 (isValidMove) 
+          以及檢查勝利條件 (checkWin)。
+  - 互動: 與 MazePanel 互動以顯示迷宮和玩家，
+          與 Player 物件互動以更新玩家狀態，
+          並根據遊戲邏輯決定遊戲進程。
+
+- Cell:
+  - 職責: 代表迷宮中的一個單元格。
+  - 功能: 設定牆壁狀態 (setWall)、
+          獲取X座標 (getX)、
+          獲取Y座標 (getY)、
+          以及判斷是否為牆壁 (isWall)。
+  - 互動: MazeGenerator 使用 Cell 物件來構建迷宮，
+          MazePanel 使用 Cell 資訊來繪製迷宮。
+
+- Player:
+  - 職責: 代表遊戲中的玩家。
+  - 功能: 獲取玩家X座標 (getX)、
+          獲取玩家Y座標 (getY)、設定玩家位置 (setPosition)。
+  - 互動: MazeGame 更新 Player 的位置，
+          MazePanel 根據 Player 的位置繪製玩家。
+
+整體關係:
+LoginPanel 是遊戲的入口，讓玩家選擇模式。選擇後，GameUI 會建立主要的遊戲介面。MazeGame 驅動遊戲邏輯，使用 MazeGenerator (下一張圖) 產生的 Cell 陣列來定義迷宮結構，並在 MazePanel 上繪製出來。Player 物件代表玩家在迷宮中的狀態，其資訊也由 MazePanel 繪製。GameUI 整合顯示所有這些資訊，並處理玩家的UI互動。
+
+Slide 2: 迷宮生成與控制狀態、儲存資料、啟動 (Maze Generation, State Control, Data Storage, Startup)
+
+- GameState:
+  - 職責: 管理遊戲的整體狀態。
+  - 功能: 初始化行數 (getInitialRows) 和列數 (getInitialCols)、
+          設定行數 (setRows) 和列數 (setCols)、
+          獲取迷宮結構 (getMaze)、
+          獲取分數 (getScores)、
+          獲取已用秒數 (getSeconds)、
+          獲取當前行數 (getRows) 和列數 (getCols)、
+          獲取最佳時間 (getBestTime)、
+          增加計時器 (incrementTimer)、
+          獲取當前關卡 (getCurrentLevel)、
+          設定勝利者ID (setWinnerId)、
+          獲取勝利者ID (getWinnerId)、
+          增加關卡 (incrementLevel)、
+          獲取玩家列表 (getPlayers)、
+          更新最佳時間 (updateBestTime)、
+          增加分數 (addPoint)、
+          設定當前關卡 (setCurrentLevel)、
+          設定迷宮 (setMaze)、
+          重置計時器 (resetTimer)。
+  - 互動: 遊戲中的各個部分 (如 MazeGame, GameUI) 
+          會讀取或修改 GameState 中的資訊，以反映和控制遊戲進程。
+
+- MazePanel:
+  - 職責: 負責在畫面上繪製迷宮和玩家。
+  - 功能: 繪製元件 (paintComponent)、
+          設定玩家 (setPlayers)、
+          獲取迷宮 (getMaze)、
+          獲取偏好尺寸 (getPreferredSize)。
+  - 互動: 從 MazeGame 或 GameState 獲取迷宮 (Cell[][]) 
+          和玩家數據，並將其視覺化呈現。
+
+- Continue:
+  - 職責: 處理遊戲的存檔和讀檔功能。
+  - 功能: 讀取遊戲存檔 (loadGame)、
+          儲存遊戲進度 (saveGame)，
+          其中 SaveData 內部類別可能用於組織存檔數據，
+          如關卡、時間、種子等。
+  - 互動: 當玩家選擇存檔或讀檔時，
+          MazeGame 或 GameUI 會調用此類別的方法。
+
+- App:
+  - 職責: 作為應用程式的進入點和主要協調者。
+  - 功能: 載入設定 (loadConfig)、
+          設定迷宮高度 (setMazeHeight) 和寬度 (setMazeWidth)、
+          獲取迷宮高度 (getMazeHeight) 和寬度 (getMazeWidth)、
+          切換面板 (switchPanel) 以改變顯示的UI畫面 (例如從登入畫面到遊戲畫面)、
+          以及程式主入口 (main)。
+  - 互動: 啟動遊戲，初始化必要的設定和第一個畫面 (通常是 LoginPanel)。
+
+- MazeGenerator:
+  - 職責: 負責生成隨機的迷宮。
+  - 功能: 打亂陣列 (shuffleArray) (可能是生成演算法的一部分)、
+          生成迷宮 (generate)、
+          根據特定大小生成迷宮 (generateMaze)、
+          獲取種子 (getSeed) (用於可重現的迷宮)、
+          以及檢查座標是否有效 (isValid) (輔助方法)。
+  - 互動: MazeGame 在初始化或進入新關卡時，
+          會調用 MazeGenerator 來創建新的迷宮結構 (Cell[][])。
+
+整體關係:
+App 是遊戲的起點，它初始化遊戲環境並顯示初始介面。當遊戲開始時，MazeGenerator 會被調用來生成迷宮。GameState 則全程追蹤和管理遊戲的各種狀態數據，如關卡、分數、時間等。MazePanel 根據 MazeGenerator 生成的迷宮數據和 GameState 中的玩家數據來繪製遊戲畫面。Continue 類別則提供了存檔和讀檔的功能，允許玩家保存和恢復 GameState 中的部分重要資訊以及迷宮種子。這些類別協同工作，確保了迷宮的正確生成、遊戲狀態的有效管理、進度的儲存與載入，以及整個應用程式的順利啟動和運行。

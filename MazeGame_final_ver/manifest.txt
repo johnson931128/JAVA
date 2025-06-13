@@ -1,2 +1,2 @@
 Main-Class: Main.App
-Class-Path: . 
+Class-Path: lib/gson-2.10.1.jar lib/jlayer-1.0.1.jar
